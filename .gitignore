@@ -1,3 +1,9 @@
+.idea
+Data/pickles
+
+Data/movies-dataset/ratings.csv
+Data/movies-dataset/credits.csv
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
