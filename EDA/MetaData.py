@@ -6,7 +6,7 @@ import numpy as np
 
 def metadata_eda(meta_df, ratings_df):
 
-    '''fig = px.scatter(meta_df, x='budget', y='revenue', hover_data=['title'], color='genres', width=1600, height=800)
+    fig = px.scatter(meta_df, x='budget', y='revenue', hover_data=['title'], color='genres', width=1200, height=800)
     fig.update_layout(
         title='The Relationship between Budget and Revenue',
         xaxis_title='Budget',
@@ -15,7 +15,7 @@ def metadata_eda(meta_df, ratings_df):
             size=16
         )
     )
-    fig.show()'''
+    fig.show()
 
 
     genre_budget_df = meta_df.groupby(['genres'])['budget'].sum()
@@ -54,7 +54,7 @@ def metadata_eda(meta_df, ratings_df):
         title='Sum of all Movie Budgets in each Genre',
         xaxis_title='Genre',
         yaxis_title='Total Budget',
-        width=1600,
+        width=1200,
         height=800,
         font=dict(
             size=16
