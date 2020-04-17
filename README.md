@@ -5,6 +5,7 @@ The data set can be found at: https://www.kaggle.com/rounakbanik/the-movies-data
 
 I could not upload all the files directly due to some being too big. I have included some of the smaller csvs in the repository for a sample of what the data looks like though.
 
+Due to the columns of the data set not being detailed, it is difficult to assume what each of the columns mean. The EDA won't be as in depth as others.
 
 # EDA
 
@@ -25,4 +26,34 @@ It's interesting that budget doesn't really seem to affect the runtime of a movi
 A few things to note from this scatter plot:
 - There is a movie runtime sweet-spot 0 to ~200 minutes. Makes sense because no one wants to watch a 900 minute movie
 - Each movie genre almost has a tight clustering of revenue and runtime. Family movies are a good example of this
-- Drama movies tend to be longer, which is interesting 
+- Drama movies tend to be longer, which is interesting
+
+
+# Clustering
+One feature that I have not looked at yet that could pose some implications in clustering is the vote_count label.
+
+## Vote Count Data Distribution
+![image](Charts/Full_Vote_Count_Dist.png)
+It seems that a majority has a vote count that is not substantial. I am talking about votes under 15.  
+  
+So I am thinking of removing everything before the 3rd quartile.  
+Here is the new distribution  
+![image](Charts/Quart_Vote_Count_Dist.png) 
+This looks considerably better and will help us understand our clustering results better.
+
+
+## KMeans Clustering
+
+Vote Count alone shows that the data is not perfectly distributed. Due to this, I plan to use a MinMax Scaler to preprocess my data.  
+  
+I now need to run a custom Grid Search to find the optimal K for the KMeans algorithm. I will try Ks 1 through 30 and see which K gives me the best score using the Elbow Method.
+
+### Elbow Method
+![image](Charts/Elbow_res.png) 
+Since these are plotly graphs, I am able to zoom in and look and trends more closely. Look at my Kaggle notebook to interact with the graphs.  
+I decided that clusters of 9 seems to have the best elbow. I could go for a cluster like 19 (you can see it a little), but 9 is easier to work with/
+
+### Cluster Analysis
+Here are the individual records from the data frame grouped up with their clusters
+![image](Charts/Cluster_Record_Count.png)  
+Cluster 4 seems to have the most records by a significant amount in comparison to cluster 1.

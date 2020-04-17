@@ -1,8 +1,5 @@
 import plotly.express as px
 import plotly.graph_objs as go
-import plotly.figure_factory as ff
-import matplotlib.pyplot as plt
-import numpy as np
 
 def metadata_eda(meta_df, ratings_df):
 
@@ -17,10 +14,7 @@ def metadata_eda(meta_df, ratings_df):
     )
     fig.show()
 
-
     genre_budget_df = meta_df.groupby(['genres'])['budget'].sum()
-
-    print(genre_budget_df.shape)
 
     fig = go.Figure([
         go.Bar(
@@ -87,6 +81,33 @@ def metadata_eda(meta_df, ratings_df):
         )
     )
     fig.show()
+
+    fig = go.Figure(go.Box(
+        y=meta_df['vote_count']
+    ))
+
+    fig.update_layout(
+        title='Vote Count Distribution',
+        yaxis_title='Vote Count',
+        width=1200,
+        height=800
+    )
+    fig.show()
+
+    quart_df = meta_df[meta_df['vote_count'] >= 58]
+    fig = go.Figure(go.Box(
+        y=quart_df['vote_count']
+    ))
+
+    fig.update_layout(
+        title='Vote Count Distribution',
+        yaxis_title='Vote Count',
+        width=1200,
+        height=800
+    )
+
+    fig.show()
+
 
 
 
