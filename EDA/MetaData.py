@@ -66,4 +66,27 @@ def metadata_eda(meta_df, ratings_df):
 
     fig.show()
 
+    fig = px.scatter(meta_df, x='budget', y='runtime', hover_data=['title'], color='genres', width=1200, height=800)
+    fig.update_layout(
+        title='The Relationship between Budget and Movie Runtime',
+        xaxis_title='Budget',
+        yaxis_title='Runtime',
+        font=dict(
+            size=16
+        )
+    )
+    fig.show()
+
+    fig = px.scatter(meta_df, x='runtime', y='revenue', hover_data=['title'], color='genres', width=1200, height=800)
+    fig.update_layout(
+        title='The Relationship between Runtime and Movie Revenue',
+        xaxis_title='Runtime',
+        yaxis_title='Revenue',
+        font=dict(
+            size=16
+        )
+    )
+    fig.show()
+
+
 
