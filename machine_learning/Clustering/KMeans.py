@@ -8,29 +8,30 @@ import os
 import pandas as pd
 import matplotlib.pyplot as plt
 import matplotlib.style as style
+from plotly.offline import init_notebook_mode, iplot, plot
+import numpy as np
+
 
 def do_Kmeans(df):
-
     scaled_df = df[['budget', 'popularity', 'revenue', 'runtime', 'vote_average', 'vote_count']]
-    
+
     smaller_df = scaled_df.copy()
-    
+
     scalar = MinMaxScaler()
 
     scaled = scalar.fit_transform(df[['budget', 'popularity', 'revenue', 'runtime', 'vote_average', 'vote_count']])
 
     scaled_df = pd.DataFrame(scaled, index=scaled_df.index, columns=scaled_df.columns)
-    
+
     if not os.path.isfile('Data/pickles/kmeans_pickle'):
         # Get optimal K
         clusters = param_tune(scaled_df)
 
         scaled_df = apply_kmeans(scaled_df, clusters)
-        
+
         scaled_df.to_pickle('Data/pickles/kmeans_pickle')
     else:
         scaled_df = pd.read_pickle('Data/pickles/kmeans_pickle')
-
 
     smaller_df = smaller_df.join(scaled_df['cluster_label'])
     smaller_df['cluster_string'] = smaller_df['cluster_label'].astype(str)
@@ -39,10 +40,9 @@ def do_Kmeans(df):
     kmeans_eda(smaller_df)
 
 
-
 def param_tune(df):
     scores = {'clusters': list(), 'score': list()}
-    for cluster_num in range(1,31):
+    for cluster_num in range(1, 31):
         scores['clusters'].append(cluster_num)
         scores['score'].append(KMeans(n_clusters=cluster_num, verbose=1).fit(df).score(df))
 
@@ -99,8 +99,9 @@ def apply_kmeans(df, clusters):
 
 
 def kmeans_eda(df):
-
-    fig, ax = plt.subplots(1,1)
+    # Cluster Cardinality
+    style.use('seaborn-poster')
+    '''fig, ax = plt.subplots(1,1)
     cluster_comb = df.groupby(['cluster_label'])['title'].count().sort_values(ascending=False)
     sns.barplot(y=cluster_comb.index, x=cluster_comb.values, orient='h', palette="Spectral",
                 edgecolor='black', linewidth=1)
@@ -112,7 +113,8 @@ def kmeans_eda(df):
     plt.savefig('Charts/Cluster_Record_Count.png')
     plt.show()
 
-    print(df['genres'])
+    # Scatter Matrix
+
     fig = px.scatter_matrix(df, dimensions=['budget', 'popularity', 'revenue', 'runtime', 'vote_average', 'vote_count'],
                             color='cluster_string', hover_data=['title', 'genres'])
     fig.update_layout(
@@ -120,6 +122,57 @@ def kmeans_eda(df):
         height=1000,
         width=1900
     )
-    fig.show()
+    iplot(fig)'''
 
+    '''['budget', 'popularity', 'revenue', 'runtime', 'vote_average', 
+    'vote_count', 'cluster_label', 'cluster_string', 'title', 'genres']'''
 
+    # Clusters and Genres EDA
+
+    clusters = list(df['cluster_label'].sort_values().unique())
+    cluster_dict = dict()
+    cluster_count = 0
+    for col in range(3):
+        for row in range(3):
+            cluster_df = df[df.cluster_label == clusters[cluster_count]]
+            cluster_dict["{},{}".format(str(col), str(row))] = cluster_df['genres'].value_counts()
+            cluster_count += 1
+
+    cluster_count = 0
+
+    fig, axs = plt.subplots(3, 3, figsize=(15,15))
+
+    for col in range(3):
+        for row in range(3):
+            coord = "{},{}".format(str(col), str(row))
+
+            sns.barplot(y=cluster_dict[coord].index, x=cluster_dict[coord].values, orient='h',
+                        palette={'Drama': '#94447f',
+                                 'Action': '#5796ef',
+                                 'Adventure': '#8a59c0',
+                                 'Comedy': '#288abf',
+                                 'Crime': '#0ab78d',
+                                 'Thriller': '#4ed993',
+                                 'Fantasy': '#7d3970',
+                                 'Horror': '#b3dc67',
+                                 'Science Fiction': '#dc560a',
+                                 'Animation': '#0079fe',
+                                 'Romance': '#98d3a8',
+                                 'Mystery': '#d5105a',
+                                 'Family': '#d04dcf',
+                                 'War': '#58c7a2',
+                                 'History': '#7bf1f8',
+                                 'Western': '#244155',
+                                 'TV Movie': '#587b77',
+                                 'Music': '#c64ac2',
+                                 'Documentary': '#5e805d'}, edgecolor='black', linewidth=0.9, ax=axs[col][row])
+
+            title = "Cluster {}'s Genre Distribution".format(cluster_count)
+            axs[col][row].set_title(title, fontsize=15, fontweight='bold')
+            cluster_count += 1
+
+    plt.tight_layout()
+
+    plt.savefig('Charts/ClustersGenreDist', bbox_inches='tight')
+
+    plt.show()

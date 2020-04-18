@@ -1,7 +1,9 @@
 # Movies-EDA
 Looking at a data set containing meta data on 45,000 movies.
 
-The data set can be found at: https://www.kaggle.com/rounakbanik/the-movies-dataset  
+The data set can be found at: https://www.kaggle.com/rounakbanik/the-movies-dataset
+
+I also have a notebook on Kaggle where most of the charts are interactive here: https://www.kaggle.com/jbofill/eda-and-clustering
 
 I could not upload all the files directly due to some being too big. I have included some of the smaller csvs in the repository for a sample of what the data looks like though.
 
@@ -62,3 +64,9 @@ Cluster 4 seems to have the most records by a significant amount in comparison t
 Looking how each of the features compare to each other with each cluster being colored
 ![image](Charts/BigScatterMatrix.png)
 It's interesting to see that cluster 3 is always on the higher end of all values on the chart. What makes it even more interesting is that cluster 3 is the smallest of all clusters. This must mean there is a cool underlying trend for cluster 3.  
+
+#### Each of the Clusters Genre Distribution
+First thing I would like to look at is whether there is some sort of genre cluster going on (most likely not)
+![image](Charts/ClustersGenreDist.png)
+I find it interesting that Drama and Action movies seem to be the top in several clusters. This could be that there is just a larger quantity of these movies in the data set, but then why is Drama's count so low in Cluster 4,7,8?  
+From these results, I'd like to next compare specific movies within the Drama and Action genres within several clusters and find the similarities / differences.
