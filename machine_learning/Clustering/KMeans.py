@@ -8,8 +8,7 @@ import os
 import pandas as pd
 import matplotlib.pyplot as plt
 import matplotlib.style as style
-from plotly.offline import init_notebook_mode, iplot, plot
-import numpy as np
+from plotly.offline import iplot
 
 
 def do_Kmeans(df):
@@ -22,6 +21,8 @@ def do_Kmeans(df):
     scaled = scalar.fit_transform(df[['budget', 'popularity', 'revenue', 'runtime', 'vote_average', 'vote_count']])
 
     scaled_df = pd.DataFrame(scaled, index=scaled_df.index, columns=scaled_df.columns)
+
+
 
     if not os.path.isfile('Data/pickles/kmeans_pickle'):
         # Get optimal K
@@ -67,7 +68,7 @@ def param_tune(df):
 
 
 def apply_kmeans(df, clusters):
-    kmeans = KMeans(n_clusters=clusters, verbose=1)
+    kmeans = KMeans(n_clusters=clusters, verbose=1, random_state=0)
     cluster_labels = kmeans.fit(df).labels_
 
     df['cluster_label'] = cluster_labels
@@ -101,7 +102,7 @@ def apply_kmeans(df, clusters):
 def kmeans_eda(df):
     # Cluster Cardinality
     style.use('seaborn-poster')
-    '''fig, ax = plt.subplots(1,1)
+    fig, ax = plt.subplots(1,1)
     cluster_comb = df.groupby(['cluster_label'])['title'].count().sort_values(ascending=False)
     sns.barplot(y=cluster_comb.index, x=cluster_comb.values, orient='h', palette="Spectral",
                 edgecolor='black', linewidth=1)
@@ -122,14 +123,14 @@ def kmeans_eda(df):
         height=1000,
         width=1900
     )
-    iplot(fig)'''
+    iplot(fig)
 
     '''['budget', 'popularity', 'revenue', 'runtime', 'vote_average', 
     'vote_count', 'cluster_label', 'cluster_string', 'title', 'genres']'''
 
     # Clusters and Genres EDA
 
-    clusters = list(df['cluster_label'].sort_values().unique())
+    clusters = list(df['cluster_label'].unique())
     cluster_dict = dict()
     cluster_count = 0
     for col in range(3):
@@ -165,7 +166,8 @@ def kmeans_eda(df):
                                  'Western': '#244155',
                                  'TV Movie': '#587b77',
                                  'Music': '#c64ac2',
-                                 'Documentary': '#5e805d'}, edgecolor='black', linewidth=0.9, ax=axs[col][row])
+                                 'Documentary': '#5e805d',
+                                 'Foreign':'#e28872'}, edgecolor='black', linewidth=0.9, ax=axs[col][row])
 
             title = "Cluster {}'s Genre Distribution".format(cluster_count)
             axs[col][row].set_title(title, fontsize=15, fontweight='bold')

@@ -1,7 +1,7 @@
 import ast
 
 
-def clean_data(meta_df, ratings_df):
+def clean_data(meta_df):
     
     meta_df.drop(['belongs_to_collection', 'homepage', 'tagline', 'poster_path', 'overview', 'imdb_id', 'spoken_languages'], inplace=True, axis=1)
     
@@ -44,13 +44,6 @@ def clean_data(meta_df, ratings_df):
 
     meta_df.dropna(inplace=True)
 
-    movie_id_set = set()
-
-    for i in meta_df['id']:
-        movie_id_set.add(i)
-
-    ratings_df = ratings_df[~ratings_df['movieId'].isin(movie_id_set)]
-
     meta_df['budget'] = meta_df['budget'].astype(int)
 
-    return meta_df, ratings_df
+    return meta_df

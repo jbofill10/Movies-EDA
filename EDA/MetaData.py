@@ -1,7 +1,7 @@
 import plotly.express as px
 import plotly.graph_objs as go
 
-def metadata_eda(meta_df, ratings_df):
+def metadata_eda(meta_df):
 
     fig = px.scatter(meta_df, x='budget', y='revenue', hover_data=['title'], color='genres', width=1200, height=800)
     fig.update_layout(

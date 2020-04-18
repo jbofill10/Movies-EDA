@@ -58,7 +58,7 @@ I decided that clusters of 9 seems to have the best elbow. I could go for a clus
 ### Cluster Analysis
 Here are the individual records from the data frame grouped up with their clusters
 ![image](Charts/Cluster_Record_Count.png)  
-Cluster 4 seems to have the most records by a significant amount in comparison to cluster 1.
+Cluster 0,2 and 6 has a cardinality considerably larger than the rest
 
 #### Feature Matrix
 Looking how each of the features compare to each other with each cluster being colored
@@ -68,5 +68,5 @@ It's interesting to see that cluster 3 is always on the higher end of all values
 #### Each of the Clusters Genre Distribution
 First thing I would like to look at is whether there is some sort of genre cluster going on (most likely not)
 ![image](Charts/ClustersGenreDist.png)
-I find it interesting that Drama and Action movies seem to be the top in several clusters. This could be that there is just a larger quantity of these movies in the data set, but then why is Drama's count so low in Cluster 4,7,8?  
+I find it interesting that Drama and Action movies seem to be the top in several clusters. This could be that there is just a larger quantity of these movies in the data set, but then why is Drama's count so low in Cluster 7 and 8?  
 From these results, I'd like to next compare specific movies within the Drama and Action genres within several clusters and find the similarities / differences.
