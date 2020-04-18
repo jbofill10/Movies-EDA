@@ -57,3 +57,8 @@ I decided that clusters of 9 seems to have the best elbow. I could go for a clus
 Here are the individual records from the data frame grouped up with their clusters
 ![image](Charts/Cluster_Record_Count.png)  
 Cluster 4 seems to have the most records by a significant amount in comparison to cluster 1.
+
+#### Feature Matrix
+Looking how each of the features compare to each other with each cluster being colored
+![image](Charts/BigScatterMatrix.png)
+It's interesting to see that cluster 3 is always on the higher end of all values on the chart. What makes it even more interesting is that cluster 3 is the smallest of all clusters. This must mean there is a cool underlying trend for cluster 3.  

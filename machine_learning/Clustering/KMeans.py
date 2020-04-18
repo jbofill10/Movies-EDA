@@ -2,6 +2,7 @@ from sklearn.cluster import KMeans
 from sklearn.preprocessing import MinMaxScaler
 
 import plotly.graph_objs as go
+import plotly.express as px
 import seaborn as sns
 import os
 import pandas as pd
@@ -32,7 +33,8 @@ def do_Kmeans(df):
 
 
     smaller_df = smaller_df.join(scaled_df['cluster_label'])
-    smaller_df = smaller_df.join(df['title'])
+    smaller_df['cluster_string'] = smaller_df['cluster_label'].astype(str)
+    smaller_df = smaller_df.join(df[['title', 'genres']])
 
     kmeans_eda(smaller_df)
 
@@ -97,7 +99,7 @@ def apply_kmeans(df, clusters):
 
 
 def kmeans_eda(df):
-    style.use('seaborn-poster')
+
     fig, ax = plt.subplots(1,1)
     cluster_comb = df.groupby(['cluster_label'])['title'].count().sort_values(ascending=False)
     sns.barplot(y=cluster_comb.index, x=cluster_comb.values, orient='h', palette="Spectral",
@@ -109,3 +111,15 @@ def kmeans_eda(df):
     ax.spines['right'].set_visible(False)
     plt.savefig('Charts/Cluster_Record_Count.png')
     plt.show()
+
+    print(df['genres'])
+    fig = px.scatter_matrix(df, dimensions=['budget', 'popularity', 'revenue', 'runtime', 'vote_average', 'vote_count'],
+                            color='cluster_string', hover_data=['title', 'genres'])
+    fig.update_layout(
+        title='Cluster Scatter Matrix',
+        height=1000,
+        width=1900
+    )
+    fig.show()
+
+
