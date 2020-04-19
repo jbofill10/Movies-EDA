@@ -70,3 +70,24 @@ First thing I would like to look at is whether there is some sort of genre clust
 ![image](Charts/ClustersGenreDist.png)
 I find it interesting that Drama and Action movies seem to be the top in several clusters. This could be that there is just a larger quantity of these movies in the data set, but then why is Drama's count so low in Cluster 7 and 8?  
 From these results, I'd like to next compare specific movies within the Drama and Action genres within several clusters and find the similarities / differences.
+
+#### Drama Revenue Distribution in Clusters 0,1,2, and 5
+![image](Charts/DramaClustersSwarm.png)
+
+It doesn't seem like there's any special indications of why clusters are the way they are on this graph alone...but  
+since plotly gives me the entire row data when I hover over a point, I was able to find out that every cluster's vote average range is usually within 1 point.  
+
+Let's look at that hypothesis next
+#### Vote Average Distribution from Drama Movies in Clusters 0,1,2, and 5
+![image](Charts/VoteAverageClusters_Drama.png) 
+Really interesting. It seems that my hypothesis was correct. Although this is for Drama movies within these select clusters. Let's add in all clusters.
+
+#### Vote Average Distribution from Drama Movies in all Clusters
+![image](Charts/AllDramaVoteAvg_Cluster.png)
+Within the drama category, vote average definitely seems to have an influence on which cluster the movie will go to. Although some clusters like 3 & 4 are hard to differentiate why one movie would be in one cluster over the other.
+ 
+Let's see how all genres fall under this hypothesis
+##### Vote Average Distribution in all Movie Genres
+![image](Charts/VoteAverage_Dist_AllGenres.png)
+So while the clusters still have some distinction regardless of genre. Although the mins and maxes of the vote average increased for every cluster. This means there must be some more variables determining our clusters.
+

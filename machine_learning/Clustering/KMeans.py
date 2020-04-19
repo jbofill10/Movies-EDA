@@ -22,8 +22,6 @@ def do_Kmeans(df):
 
     scaled_df = pd.DataFrame(scaled, index=scaled_df.index, columns=scaled_df.columns)
 
-
-
     if not os.path.isfile('Data/pickles/kmeans_pickle'):
         # Get optimal K
         clusters = param_tune(scaled_df)
@@ -34,8 +32,8 @@ def do_Kmeans(df):
     else:
         scaled_df = pd.read_pickle('Data/pickles/kmeans_pickle')
 
-    smaller_df = smaller_df.join(scaled_df['cluster_label'])
-    smaller_df['cluster_string'] = smaller_df['cluster_label'].astype(str)
+    smaller_df = smaller_df.join(scaled_df[['cluster_label', 'cluster_string']])
+
     smaller_df = smaller_df.join(df[['title', 'genres']])
 
     kmeans_eda(smaller_df)
@@ -45,7 +43,7 @@ def param_tune(df):
     scores = {'clusters': list(), 'score': list()}
     for cluster_num in range(1, 31):
         scores['clusters'].append(cluster_num)
-        scores['score'].append(KMeans(n_clusters=cluster_num, verbose=1).fit(df).score(df))
+        scores['score'].append(KMeans(n_clusters=cluster_num, verbose=1, random_state=0).fit(df).score(df))
 
     scores_df = pd.DataFrame(scores)
 
@@ -70,8 +68,9 @@ def param_tune(df):
 def apply_kmeans(df, clusters):
     kmeans = KMeans(n_clusters=clusters, verbose=1, random_state=0)
     cluster_labels = kmeans.fit(df).labels_
-
+    string_labels = ["c{}".format(i) for i in cluster_labels]
     df['cluster_label'] = cluster_labels
+    df['cluster_string'] = string_labels
 
     return df
 
@@ -102,7 +101,7 @@ def apply_kmeans(df, clusters):
 def kmeans_eda(df):
     # Cluster Cardinality
     style.use('seaborn-poster')
-    fig, ax = plt.subplots(1,1)
+    '''fig, ax = plt.subplots(1,1)
     cluster_comb = df.groupby(['cluster_label'])['title'].count().sort_values(ascending=False)
     sns.barplot(y=cluster_comb.index, x=cluster_comb.values, orient='h', palette="Spectral",
                 edgecolor='black', linewidth=1)
@@ -123,14 +122,14 @@ def kmeans_eda(df):
         height=1000,
         width=1900
     )
-    iplot(fig)
+    iplot(fig)'''
 
     '''['budget', 'popularity', 'revenue', 'runtime', 'vote_average', 
     'vote_count', 'cluster_label', 'cluster_string', 'title', 'genres']'''
 
     # Clusters and Genres EDA
 
-    clusters = list(df['cluster_label'].unique())
+    '''clusters = list(df['cluster_label'].unique())
     cluster_dict = dict()
     cluster_count = 0
     for col in range(3):
@@ -177,4 +176,62 @@ def kmeans_eda(df):
 
     plt.savefig('Charts/ClustersGenreDist', bbox_inches='tight')
 
-    plt.show()
+    plt.show()'''
+
+    # Revenue Drama in Clusters
+    drama_df = df[(df.genres == 'Drama') & (df.cluster_label.isin([0, 1, 2, 5]))]
+    drama_df = drama_df.sort_values('cluster_label')
+    '''fig = px.violin(drama_df, y='revenue', x='cluster_string', color='cluster_string', points='all', hover_data=drama_df)
+
+    fig.update_layout(
+        title='Revenue Distribution in Drama Movies',
+        yaxis_title='Revenue',
+        xaxis_title='Cluster',
+        height=1000,
+        width=1500
+    )
+
+    iplot(fig)
+
+    fig = px.violin(drama_df, y='vote_average', x='cluster_string',
+                    color='cluster_string', points='all', hover_data=drama_df)
+
+    fig.update_layout(
+        title='Vote Average Distribution in Drama Movies',
+        yaxis_title='Vote Average',
+        xaxis_title='Cluster',
+        height=1000,
+        width=1500
+    )
+    
+    iplot(fig)
+
+    drama_df = df[(df.genres == 'Drama')]
+    drama_df = drama_df.sort_values('cluster_label')
+    fig = px.violin(drama_df, y='vote_average', x='cluster_string',
+                    color='cluster_string', points='all', hover_data=drama_df)
+
+    fig.update_layout(
+        title='Vote Average Distribution in Drama Movies',
+        yaxis_title='Vote Average',
+        xaxis_title='Cluster',
+        height=1000,
+        width=1500
+    )
+
+    iplot(fig)'''
+
+    drama_df = df
+    drama_df = drama_df.sort_values('cluster_label')
+    fig = px.violin(drama_df, y='vote_average', x='cluster_string',
+                    color='cluster_string', points='all', hover_data=drama_df)
+    
+    fig.update_layout(
+        title='Vote Average Distribution in all Movies',
+        yaxis_title='Vote Average',
+        xaxis_title='Cluster',
+        height=1000,
+        width=1500
+    )
+    
+    iplot(fig)
