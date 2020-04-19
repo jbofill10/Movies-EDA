@@ -89,5 +89,5 @@ Within the drama category, vote average definitely seems to have an influence on
 Let's see how all genres fall under this hypothesis
 ##### Vote Average Distribution in all Movie Genres
 ![image](Charts/VoteAverage_Dist_AllGenres.png)
-So while the clusters still have some distinction regardless of genre. Although the mins and maxes of the vote average increased for every cluster. This means there must be some more variables determining our clusters.
+So while the clusters still have some distinction regardless of genre, the mins and maxes of the vote average increased for every cluster. This means there must be some more variables determining our clusters.
 
